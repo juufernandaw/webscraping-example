@@ -1,6 +1,14 @@
 # webscraping-examples
 ### Passo a passo de como criar o seu primeiro scraper do zero!
+#### Objetivo: 
 Vamos utilizar como exemplo o [site da Nike](https://www.nike.com.br/nav/categorias/tenis/genero/feminino/tipodeproduto/calcados), com o objetivo de extrair as informações dos títulos e preços dos calçados femininos.
+#### Requisitos:
+- [Python](https://www.python.org/downloads/) instalado;
+- Biblioteca [Requests](https://pypi.org/project/requests/) instalada;
+- Biblioteca [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/#) OU biblioteca [LXML](https://lxml.de/installation.html) instalada.
+#### Sugestões:
+- [Postman](https://www.postman.com/) OU [Insomnia](https://insomnia.rest/) instalado, ou alguma ferramenta para testes de requisições;
+- [SelectorGadget](https://selectorgadget.com/).
 
 ##### PASSO A PASSO:
 1. Definir o site que se deseja realizar o scraping e quais as informações você deseja extrair dele;
@@ -8,7 +16,7 @@ Vamos utilizar como exemplo o [site da Nike](https://www.nike.com.br/nav/categor
 Dica: para analisar isso você pode utilizar o atalho Ctrl+Shift+i ou clicar com o botão direito do mouse na página e clicar em Inspecionar. Irá abrir o dev tools, o famoso ferramentas do desenvolvedor. Ali você pode analisar tudo sobre a requisição! Segue um link para apoio caso tenha alguma dificuldade: [Como abrir o Dev Tools](https://support.google.com/adsense/answer/10858959?hl=pt-BR#:~:text=Para%20abrir%20o%20DevTools%2C%20clique,%2C%20Linux%2C%20Chrome%20OS).
 Depois você deve selecionar qual a requisição que lhe interessa o conteúdo. No meu caso, é a que tem o nome de calcados, pois foi para esse endpoint que eu efetuei a requisição. Primeiramente me certifico de estar na aba de Network, então clico em calcados e depois na aba de Response, para poder analisar o conteúdo da resposta da requisição. Neste caso, o conteúdo foi retornado em formato HTML:
 ![](/images/check_response.png)
-3. Faça um teste de requisição utilizando uma aplicação de testes de API, como o [Postman](https://www.postman.com/) ou o [Insomnia](https://insomnia.rest/).
+3. Faça um teste de requisição utilizando uma aplicação de testes de API, como o Postman ou o Insomnia.
 Dica: Aqui você pode utilizar a ferramenta CurlConverter para te fornecer todas as informações necessárias para a requisição (headers, payload, url…). Ao clicar com o botão direito em cima da sua requisição > Copy > Copy as curl (bash), você terá o conteúdo da sua requisição em curl:
 ![](/images/copy_curl.png)
 Depois é só acessar uma ferramenta de conversor de curl, como o [CurlConverter](https://curlconverter.com/), e colar o conteúdo curl da requisição:
@@ -69,7 +77,7 @@ import requests
 text = requests.get(url="https://www.nike.com.br/nav/categorias/tenis/genero/feminino/tipodeproduto/calcados")
 print(text.status_code) # 403
 ```
-	3. Com isso, você entende que o único header necessário (neste caso!) é o user-agent, e que os demais são dispensáveis. E pronto, temos acesso ao conteúdo da nossa página! Como guardamos o conteúdo da requisição no objeto response, essa response possui alguns atributos, como o status_code (código de resposta), content (conteúdo/texto de retorno), url, headers, cookies… lembrando que essas informações são todas do objeto Response (resposta à requisição). Para acessar essas informações, é só digitar: response.status_code, response.text, e assim por diante…
+Com isso, você entende que o único header necessário (neste caso!) é o user-agent, e que os demais são dispensáveis. E pronto, temos acesso ao conteúdo da nossa página! Como guardamos o conteúdo da requisição no objeto response, essa response possui alguns atributos, como o status_code (código de resposta), content (conteúdo/texto de retorno), url, headers, cookies… lembrando que essas informações são todas do objeto Response (resposta à requisição). Para acessar essas informações, é só digitar: response.status_code, response.text, e assim por diante…
 
 **5. Parsing -> processamento do texto**
 Temos já o retorno da página, porém, temos apenas o texto cru, sem separação de elementos. O que nós queremos é apenas os títulos e os valores dos produtos. Para isso, há bibliotecas dedicadas para o processamento de texto, como BeautifulSoup e Lxml. Neste tutorial vamos falar um pouco sobre as duas.
@@ -92,16 +100,16 @@ soup = BeautifulSoup(response.content, "html.parser")
 titles = soup.find_all(name="div", attrs={"class", "ProductCard-styled__ProductName-sc-8f840517-9 iKtbYK"})
 prices = soup.find_all(name="span", attrs={"class", "ProductCard-styled__CurrentPrice-sc-8f840517-11 jyXUjS"})
 ```
-Você primeiramente cria um objeto do BeautifulSoup, passando como conteúdo a resposta da requisição, e informando qual o tipo de parser você deseja. Depois disso, a nossa variável soup já entende que aquele é um arquivo html. Assim, nas linhas 10 e 11, você utilizará o método find_all para encontrar todos os elementos com a tag com o respectivo nome, e com os atributos informados acima. No caso do título dos calçados, a informação está numa tag div, de classe ProductCard-styled__ProductName-sc-8f840517-9 iKtbYK. Já os preços se encontram em tags span, de classe ProductCard-styled__CurrentPrice-sc-8f840517-11 jyXUjS. Abaixo coloquei para printar na tela para mostrar como os textos foram obtidos de forma como desejado:
+Você primeiramente cria um objeto do BeautifulSoup, passando como conteúdo a resposta da requisição, e informando qual o tipo de parser você deseja. Depois disso, a nossa variável soup já entende que aquele é um arquivo html. Assim, você utilizará o método find_all para encontrar todos os elementos que tenham o respectivo tipo, e com os atributos informados acima. No caso do título dos calçados, a informação está numa tag div, de classe ProductCard-styled__ProductName-sc-8f840517-9 iKtbYK. Já os preços se encontram em tags span, de classe ProductCard-styled__CurrentPrice-sc-8f840517-11 jyXUjS. Abaixo coloquei para printar na tela para mostrar como os textos foram obtidos de forma como desejado:
+!()[/images/comparison_terminal.png]
+!()[/images/comparison_site.png]
 
-
-*- LXML:* Outra biblioteca que você pode utilizar é o lxml, que nos possibilita trabalhar com expressões em XPath. Junto com ele, uma extensão bacana é o SelectorGadget, que nos fornece expressões xpath de cada grupo de elementos. Ele é uma extensão que você pode adicionar ao seu navegador e será muito útil:
-Ao acessar o site:
+*- LXML:* Outra biblioteca que você pode utilizar é o lxml, que nos possibilita trabalhar com expressões em XPath. Junto com ele, uma extensão bacana é o SelectorGadget, que nos fornece expressões xpath de cada grupo de elementos. Ele é uma extensão que você pode adicionar ao seu navegador e será muito útil. Para utilizá-lo:
 1. Você clica no canto superior direito no ícone da lupa.
 2. Clica no elemento da página que você deseja capturar. A extensão busca padrões, então ao clicar em um elemento ele ficará verde e mostrará em amarelo todos os outros elementos que possuem semelhança. Caso você não queira esses elementos em amarelo, é só clicar em cima deles, que eles serão desconsiderados. Como no meu caso, os elementos em amarelo são do meu interesse, não faço nada.
 3. Clica no botão Xpath na parte inferior da tela.
 4. Copie o Xpath fornecido no popup. Pronto! Agora você já tem o XPath, ou seja, a localização do seu elemento XML.
-
+()[/images/selector_elements.png]
 Partindo para o código, a lógica é parecida com a anterior, a diferença é que agora usamos o XPath:
 ```python
 import requests
