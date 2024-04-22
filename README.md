@@ -123,6 +123,11 @@ Já temos o retorno da página, porém, temos apenas o texto cru, sem separaçã
 
 Ok, mas e como eu sei como capturar as tags específicas que eu quero? Se você clicar na seta ali indicado no número 1, e depois clicar no conteúdo que você deseja pegar (2), irá aparecer tanto um popup com as informações do elemento, quanto na própria resposta da requisição irá aparecer o elemento ao lado. Assim, você consegue ter acesso às informações do elemento: tipo da tag (se é div, span, p…), texto, class, id… essas informações são essenciais para captarmos o conteúdo do texto. Class e id são formas de identificarmos cada elemento na página, seja de forma coletiva/em grupo (class) ou de forma individual (id). 
 
+<p align="center">
+  <img src="/images/inspect_element.png" width="700">
+</p>
+
+
 Para o nosso exemplo, segue o código:
 ```python
 import requests
@@ -156,7 +161,7 @@ Outra biblioteca que você pode utilizar é o lxml, que nos possibilita trabalha
   <img src="/images/selector_elements.png" width="700">
 </p>
 
-Partindo para o código, a lógica é parecida com a anterior, a diferença é que agora usamos o XPath. Ficou aterrorizado com a sintaxe do XPath? Fique tranquilo! É que neste exemplo ele utilizou de [REGEX - Expressões Regulares](https://blog.dp6.com.br/regex-o-guia-essencial-das-express%C3%B5es-regulares-2fc1df38a481). É um assunto que pode parecer complexo no início, mas é de suma importância você entendê-lo, para poder construir suas [expressões em XPath utilizando REGEX](https://support.testarchitect.com/en/support/solutions/articles/4000109791-how-to-use-xpath-with-some-regular-expressions).
+Partindo para o código, a lógica é parecida com a anterior, a diferença é que agora usamos o XPath. Ficou aterrorizado com a sintaxe do XPath? Fique tranquilo! É que neste exemplo ele fez uso de [REGEX - Expressões Regulares](https://blog.dp6.com.br/regex-o-guia-essencial-das-express%C3%B5es-regulares-2fc1df38a481). É um assunto que pode parecer complexo no início, mas é de suma importância você entendê-lo, para poder construir suas [expressões em XPath utilizando REGEX](https://support.testarchitect.com/en/support/solutions/articles/4000109791-how-to-use-xpath-with-some-regular-expressions).
 
 ```python
 import requests
