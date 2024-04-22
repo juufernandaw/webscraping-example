@@ -59,7 +59,7 @@ OBS: Caso você simule a conexão e o código de status da requisição não sej
 **4.** Mão no código! Agora é hora de construir o seu código (ou copiar do CurlConverter) e testá-lo.
 
 Abaixo temos a primeira versão do código do nosso scraper, fornecido pelo próprio CurlConverter. O código é bem simples, apenas importamos a biblioteca requests (responsável pelas requisições), definimos os headers e chamamos o método GET para realizar a requisição. Passamos como argumento tanto a URL quanto os headers.
-OBS: é necessário conhecer quais são os métodos de uma requisição HTTP, caso lhe interessar: [Métodos HTTP](https://www.escoladnc.com.br/blog/aprenda-a-utilizar-os-metodos-http-get-post-e-put-em-python/)
+OBS: é necessário conhecer os métodos de uma requisição HTTP. Caso lhe interessar: [Métodos HTTP](https://www.escoladnc.com.br/blog/aprenda-a-utilizar-os-metodos-http-get-post-e-put-em-python/)
 
 ```python
 import requests
@@ -84,9 +84,9 @@ text = requests.get(url="https://www.nike.com.br/nav/categorias/tenis/genero/fem
 print(text.status_code) # 200
 ```
 
-Maravilha! Código de status com retorno 200! OBS: é importante entender o que cada código de status de uma requisição HTTP representa. Neste [link](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status) está bem completa a explicação.
+Maravilha! Código de status com retorno 200! OBS: existem vários tipos de código de status para uma requisição HTTP. Neste [link](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status) está detalhado o que cada número representa.
 
-Mas saca só, com o tempo você vai entendendo o que significa cada parâmetro do header, e percebe que alguns são mais importantes que outros!
+Mas saca só, com o tempo você vai entendendo o que significa cada parâmetro do header, e percebe que alguns são mais importantes que outros! Aqui tem um [Material sobre headers](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Headers), que detalha cada parâmetro.
 
 ```python
 import requests
@@ -112,6 +112,7 @@ print(text.status_code) # 403
 Com isso, você entende que o único header necessário (neste caso!) é o user-agent, e que os demais são dispensáveis. E pronto, temos acesso ao conteúdo da nossa página! Como guardamos o conteúdo da requisição no objeto response, essa response possui alguns atributos, como o status_code (código de resposta), content (conteúdo/texto de retorno), url, headers, cookies… lembrando que essas informações são todas do objeto Response (resposta à requisição). Para acessar essas informações, é só digitar: response.status_code, response.text, e assim por diante…
 
 **5**. PARSING -> Processamento do texto
+
 Já temos o retorno da página, porém, temos apenas o texto cru, sem separação de elementos. O que nós queremos é apenas os títulos e os valores dos produtos. Para isso, há bibliotecas dedicadas para o processamento de texto, como BeautifulSoup e Lxml. Neste tutorial vamos falar um pouco sobre as duas.
 
 #### *- BeautifulSoup:*
@@ -146,16 +147,17 @@ Abaixo, na imagem à esquerda, coloquei para printar na tela os produtos com seu
 </table>
 
 #### *- LXML:*
-Outra biblioteca que você pode utilizar é o lxml, que nos possibilita trabalhar com expressões em XPath. Junto com ele, uma extensão bacana é o SelectorGadget, que nos fornece expressões xpath de cada grupo de elementos. Ele é uma extensão que você pode adicionar ao seu navegador e será muito útil. Para utilizá-lo:
+Outra biblioteca que você pode utilizar é o lxml, que nos possibilita trabalhar com [expressões em XPath](https://escoladedados.org/tutoriais/xpath-para-raspagem-de-dados-em-html/). Junto com ele, uma extensão bacana é o SelectorGadget, que nos fornece expressões XPath de cada grupo de elementos. Ele é uma extensão que você pode adicionar ao seu navegador e será muito útil. Para utilizá-lo (após instalação):
 1. Você clica no canto superior direito no ícone da lupa;
 2. Clique no elemento da página que você deseja capturar. A extensão busca padrões, então ao clicar em um elemento ele ficará verde e mostrará em amarelo todos os outros elementos que possuem semelhança. Caso você não queira esses elementos em amarelo, é só clicar em cima deles, que eles serão desconsiderados. Como no meu caso os elementos em amarelo são do meu interesse, deixo da forma como está;
 3. Clique no botão Xpath na parte inferior da tela;
-4. Copie o Xpath fornecido no popup. Pronto! Agora você já tem o XPath, ou seja, a localização do seu elemento XML.
+4. Copie o Xpath fornecido no popup. Pronto! Agora você já tem o XPath, ou seja, a localização do seu elemento HTML/XML.
 <p align="center">
   <img src="/images/selector_elements.png" width="700">
 </p>
 
-Partindo para o código, a lógica é parecida com a anterior, a diferença é que agora usamos o XPath:
+Partindo para o código, a lógica é parecida com a anterior, a diferença é que agora usamos o XPath. Ficou aterrorizado com a sintaxe do XPath? Fique tranquilo! É que neste exemplo ele utilizou de [REGEX - Expressões Regulares](https://blog.dp6.com.br/regex-o-guia-essencial-das-express%C3%B5es-regulares-2fc1df38a481). É um assunto que pode parecer complexo no início, mas é de suma importância você entendê-lo, para poder construir suas [expressões em XPath utilizando REGEX](https://support.testarchitect.com/en/support/solutions/articles/4000109791-how-to-use-xpath-with-some-regular-expressions).
+
 ```python
 import requests
 from lxml import html
