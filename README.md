@@ -1,4 +1,4 @@
-# webscraping-examples
+# webscraping-example
 ## Passo a passo de como criar o seu primeiro scraper do zero!
 ### Objetivo: 
 Ensinar a desenvolver um scraper do zero do [site da Nike](https://www.nike.com.br/nav/categorias/tenis/genero/feminino/tipodeproduto/calcados), visando extrair as informações dos títulos e preços dos calçados femininos.
